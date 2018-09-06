@@ -85,6 +85,8 @@ namespace ClassORGcaoa2
         }
         public static void ShowALLclasses()
         {
+            Console.ForegroundColor = ConsoleColor.White;
+
 
             if (myClasses.Count == 0)
             {
@@ -92,11 +94,12 @@ namespace ClassORGcaoa2
 
                 Console.WriteLine("You Have no Classes in your Profile, Add them!");
             }
+            Console.WriteLine(" Your Classes:");
+
             foreach (Class item in myClasses)
             {
                 Console.ForegroundColor = ConsoleColor.White;
 
-                Console.WriteLine(" Your Classes:");
                 Console.WriteLine("__________________________________________");
                 Console.WriteLine(item.ClassID);
                 Console.WriteLine(item.ClassName);
@@ -105,7 +108,7 @@ namespace ClassORGcaoa2
                 Console.WriteLine(item.TimeS);
                 Console.WriteLine("Days: " + item.Days);
                 Console.WriteLine(" ");
-                Console.WriteLine("_____________________ ______________");
+                Console.WriteLine("__________________________________________");
 
             }
 
@@ -136,7 +139,7 @@ namespace ClassORGcaoa2
 
                 myTasks.Add(newTask);
 
-            Console.WriteLine("Your new task for "+newTask+ " has been Added!" );
+            Console.WriteLine("Your new task for "+newTask.ForClass+ " has been Added!" );
             
         }
 
@@ -237,9 +240,29 @@ namespace ClassORGcaoa2
                 Console.WriteLine("________________________________________________");
             }
         }
+      
+        public static void ChangeStatus()
+        {
+            ShowAllTasks();
+            Console.ForegroundColor = ConsoleColor.White;
 
+            Console.WriteLine("Enter Which Assigment you would like to mark as COMPLETE");
+           string uInputTask= Console.ReadLine();
+
+            foreach (ToDo tasks in myTasks)
+            {
+                if (uInputTask == tasks.TaskName)
+                {
+                    tasks.CompStatus = true;
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.Green;
+
+            Console.WriteLine("The status for "+uInputTask+" has been marked as COMPLETE");
         
-    }
-}
+        }
 
-//PROGRAM CANNOT SAVE PREVIOUS INFORMATION ONCE CLOSED...YET
+        }
+    }
+
+

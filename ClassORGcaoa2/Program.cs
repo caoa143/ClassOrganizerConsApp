@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ClassORGcaoa2
 {
@@ -9,7 +10,8 @@ namespace ClassORGcaoa2
 
             var myOptions = new[] { "(1):Add new Class", "(2):Add new Task", "(3):See ALL my Classes",
                                     "(4)See All my tasks", "(5) See my tasks for a specific Class",
-                                     "(6)Show a class' Info", "(7)Show my Class Schedule", "(X)Exit  " };
+                                     "(6)Show a class' Info", "(7)Show my Class Schedule", "(8)Mark Assigment as Complete",
+                                        "(X)Exit  " };
 
 
             string userIN = "";
@@ -74,9 +76,38 @@ namespace ClassORGcaoa2
                     Console.WriteLine("-------------------------");
                     Collector.ShowSchedule();
                 }
+
+                ToTextFile();
+                
+
                 Console.WriteLine(" ");
+                
+            }
+
+        }
+        //##############SAVE TO TEXT FILE######################
+
+        public static void ToTextFile()
+        {
+            var listC = new List<string>();
+            var listT = new List<string>();
+            for (int i = 0; i < Collector.myClasses.Count; i++)
+            {
+                listC.Add(Collector.myClasses[i].ClassID.ToString() + ","+ Collector.myClasses[i].ClassName.ToString() + "," +
+                    Collector.myClasses[i].Teacher.ToString() + "," + Collector.myClasses[i].TimeS.ToString() + "," +
+                    Collector.myClasses[i].Days.ToString() + "," + Collector.myClasses[i].Room.ToString() + "," );
+            }
+            for (int i = 0; i < Collector.myTasks.Count; i++)
+            {
+                listT.Add(Collector.myTasks[i].TaskName.ToString() + ","+ Collector.myTasks[i].ForClass.ToString() + "," 
+                    + Collector.myTasks[i].DateAssigned.ToString() + "," + Collector.myTasks[i].DateDue.ToString() + "," +
+                    Collector.myTasks[i].CompStatus.ToString() + "," );
 
             }
+
+                System.IO.File.WriteAllLines(@"C:\Users\andre\source\repos\ClassORGcaoa2\TextFilesSave\Classes.txt", listC);
+            System.IO.File.WriteAllLines(@"C:\Users\andre\source\repos\ClassORGcaoa2\TextFilesSave\Assigns.txt", listT);
+
 
         }
     }

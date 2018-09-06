@@ -1,0 +1,2 @@
+Chem 1,Gen Chem 1,Lebron James,10:00 AM,T,TH,BEC 2,
+Math 1,Algebra 1,Trump,08:00 AM,M,T,W,1,
