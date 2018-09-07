@@ -11,7 +11,7 @@ namespace ClassORGcaoa2
         public string ClassName { get; set; }
         public string Teacher { get; set; }
         public string Room { get; set; }
-        public string TimeS { get; set; }
+        public DateTime TimeS { get; set; }
         public string Days { get; set; }
 
     }

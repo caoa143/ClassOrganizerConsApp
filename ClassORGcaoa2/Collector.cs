@@ -6,13 +6,74 @@ using System.Text;
 using System.Linq;
 using System.Globalization;
 using System.Text;
+using System.IO;
+
+
+
+//DateTime dt = DateTime.Parse("6/22/2009 07:00:00 AM");
+
+//dt.ToString("HH:mm"); // 07:00 // 24 hour clock // hour is always 2 digits
+//dt.ToString("hh:mm tt");
 
 namespace ClassORGcaoa2
 {
     class Collector
     {
-    
-        //_______LISTS______
+
+        //METHOD FOR OLD USERS*********************
+        public static void GetFromText()
+        {
+            string[] logFile = File.ReadAllLines(@"C:\Users\andre\source\repos\ClassORGcaoa2\TextFilesSave\Classes.txt");
+            foreach (var classString in logFile)
+            {
+                var tempClass = new Class();
+                var tempArr = classString.Split('|');
+
+                if (tempArr.Length > 2)
+                {
+                    tempClass.ClassID = tempArr[0]; tempClass.ClassName = tempArr[1]; tempClass.Teacher = tempArr[2];
+                    tempClass.TimeS = DateTime.Parse(tempArr[3]); ;
+                    tempClass.Days = tempArr[4]; tempClass.Room = tempArr[5];
+                    myClasses.Add(tempClass);
+                }
+
+            }
+
+
+            string[] logFile2 = File.ReadAllLines(@"C:\Users\andre\source\repos\ClassORGcaoa2\TextFilesSave\Assigns.txt");
+            foreach (var TaskString in logFile2)
+            {
+                var tempTasks = new ToDo();
+                var tempArr2 = TaskString.Split('|');
+                if (tempArr2.Length > 2)
+                {
+                    tempTasks.TaskName = tempArr2[0]; tempTasks.ForClass = tempArr2[1];
+                    tempTasks.DateAssigned = DateTime.ParseExact(tempArr2[2], "MM/dd/yyyy h:mm tt", CultureInfo.InvariantCulture);
+                    tempTasks.DateDue = DateTime.ParseExact(tempArr2[3], "MM/dd/yyyy h:mm tt", CultureInfo.InvariantCulture);
+                    if (tempArr2[4] == "Completed")
+                    {
+                        tempTasks.CompStatus = true;
+                    }
+                    if (tempArr2[4] == "Incomplete")
+                    {
+                        tempTasks.CompStatus = false;
+                    }
+
+                    myTasks.Add(tempTasks);
+                }
+            }
+            myClasses = myClasses.OrderByDescending(t => t.TimeS).ToList();
+        }
+
+            
+
+    //*****************************************
+
+    //METHOD FOR NEW USERS ^^^^^^^^^^^^^^^^^^^^^^^^
+
+    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    //_______LISTS______
 
         public static List<Class> myClasses = new List<Class>();
 
@@ -40,8 +101,9 @@ namespace ClassORGcaoa2
             Console.WriteLine("Enter the Days the class is held (M,T,W,TH,F");
             newClass.Days = Console.ReadLine();
 
-            Console.WriteLine("Enter the time the class starts (hh:mm tt)");
-            newClass.TimeS = Console.ReadLine();
+            Console.WriteLine("Enter the time the class starts (h:mm tt)");
+            string timeSTR = Console.ReadLine();
+            newClass.TimeS= DateTime.ParseExact(timeSTR, "h:mm tt", CultureInfo.InvariantCulture);
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(newClass.ClassID+" "+newClass.ClassName+" has been added to your classes!");
@@ -62,11 +124,7 @@ namespace ClassORGcaoa2
 
             foreach (Class item in myClasses)
             {
-                if (inputC != item.ClassID||inputC != item.ClassName)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("This class does not exist in your list of classes. Add it!");
-                }
+               
                 if (inputC == item.ClassID || inputC == item.ClassName)
                 {
                     Console.ForegroundColor = ConsoleColor.White;
@@ -79,7 +137,12 @@ namespace ClassORGcaoa2
                     Console.WriteLine("Days: "+item.Days);
 
                 }
-                 
+                else if (inputC != item.ClassID || inputC != item.ClassName)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("This class does not exist in your list of classes. Add it!");
+                }
+
             }
             
         }
@@ -96,6 +159,7 @@ namespace ClassORGcaoa2
             }
             Console.WriteLine(" Your Classes:");
 
+            myClasses = myClasses.OrderBy(t => t.TimeS).ToList();
             foreach (Class item in myClasses)
             {
                 Console.ForegroundColor = ConsoleColor.White;
@@ -105,7 +169,7 @@ namespace ClassORGcaoa2
                 Console.WriteLine(item.ClassName);
                 Console.WriteLine("Room " + item.Room);
                 Console.WriteLine("Teacher " + item.Teacher);
-                Console.WriteLine(item.TimeS);
+                Console.WriteLine(item.TimeS.ToString("h:mm tt"));
                 Console.WriteLine("Days: " + item.Days);
                 Console.WriteLine(" ");
                 Console.WriteLine("__________________________________________");
@@ -133,7 +197,7 @@ namespace ClassORGcaoa2
 
                 Console.WriteLine("When is this Assignment due? (MM/DD/YYYY 00:00 #M");
                 string dateDueSTR = Console.ReadLine();
-                newTask.DateDue = DateTime.ParseExact(dateDueSTR, "MM/dd/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+                newTask.DateDue = DateTime.Parse(dateDueSTR);
 
                 newTask.CompStatus = false;
 
@@ -262,7 +326,7 @@ namespace ClassORGcaoa2
         
         }
 
-        }
     }
+}
 
 
