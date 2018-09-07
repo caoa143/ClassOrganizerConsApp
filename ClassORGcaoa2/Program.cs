@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ClassORGcaoa2
 {
@@ -14,11 +15,15 @@ namespace ClassORGcaoa2
 
             MoreMethds.UserStatus();
 
+            Directory.SetCurrentDirectory(@"C:\Users\andre\source\repos\ClassORGcaoa2");
+
             //.................NEW..................
 
             //......................................
 
             //*********************************************************
+
+
 
             var myOptions = new[] { "(1):Add new Class", "(2):Add new Task", "(3):See ALL my Classes",
                                     "(4)See All my tasks", "(5) See my tasks for a specific Class",
@@ -122,8 +127,8 @@ namespace ClassORGcaoa2
 
             }
 
-                System.IO.File.WriteAllLines(@"C:\Users\andre\source\repos\ClassORGcaoa2\TextFilesSave\Classes.txt", listC);
-            System.IO.File.WriteAllLines(@"C:\Users\andre\source\repos\ClassORGcaoa2\TextFilesSave\Assigns.txt", listT);
+                System.IO.File.WriteAllLines(MoreMethds.DirCList[0]+"\\Classes.txt", listC);
+            System.IO.File.WriteAllLines(MoreMethds.DirCList[0]+"\\Assigns.txt", listT);
 
 
         }

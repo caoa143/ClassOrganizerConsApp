@@ -23,7 +23,11 @@ namespace ClassORGcaoa2
         //METHOD FOR OLD USERS*********************
         public static void GetFromText()
         {
-            string[] logFile = File.ReadAllLines(@"C:\Users\andre\source\repos\ClassORGcaoa2\TextFilesSave\Classes.txt");
+            string path = MoreMethds.DirCList[0];
+            string[] logFile = File.ReadAllLines(path + "\\Classes.txt");
+
+           
+
             foreach (var classString in logFile)
             {
                 var tempClass = new Class();
@@ -40,7 +44,7 @@ namespace ClassORGcaoa2
             }
 
 
-            string[] logFile2 = File.ReadAllLines(@"C:\Users\andre\source\repos\ClassORGcaoa2\TextFilesSave\Assigns.txt");
+            string[] logFile2 = File.ReadAllLines(path + "\\Assigns.txt");
             foreach (var TaskString in logFile2)
             {
                 var tempTasks = new ToDo();
@@ -48,8 +52,8 @@ namespace ClassORGcaoa2
                 if (tempArr2.Length > 2)
                 {
                     tempTasks.TaskName = tempArr2[0]; tempTasks.ForClass = tempArr2[1];
-                    tempTasks.DateAssigned = DateTime.ParseExact(tempArr2[2], "MM/dd/yyyy h:mm tt", CultureInfo.InvariantCulture);
-                    tempTasks.DateDue = DateTime.ParseExact(tempArr2[3], "MM/dd/yyyy h:mm tt", CultureInfo.InvariantCulture);
+                    tempTasks.DateAssigned = DateTime.Parse(tempArr2[2]);
+                    tempTasks.DateDue = DateTime.Parse(tempArr2[3]);
                     if (tempArr2[4] == "Completed")
                     {
                         tempTasks.CompStatus = true;
@@ -62,18 +66,19 @@ namespace ClassORGcaoa2
                     myTasks.Add(tempTasks);
                 }
             }
+
             myClasses = myClasses.OrderByDescending(t => t.TimeS).ToList();
         }
 
-            
 
-    //*****************************************
 
-    //METHOD FOR NEW USERS ^^^^^^^^^^^^^^^^^^^^^^^^
+        //*****************************************
 
-    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        //METHOD FOR NEW USERS ^^^^^^^^^^^^^^^^^^^^^^^^
 
-    //_______LISTS______
+        //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+        //_______LISTS______
 
         public static List<Class> myClasses = new List<Class>();
 
@@ -103,15 +108,15 @@ namespace ClassORGcaoa2
 
             Console.WriteLine("Enter the time the class starts (h:mm tt)");
             string timeSTR = Console.ReadLine();
-            newClass.TimeS= DateTime.ParseExact(timeSTR, "h:mm tt", CultureInfo.InvariantCulture);
+            newClass.TimeS = DateTime.ParseExact(timeSTR, "h:mm tt", CultureInfo.InvariantCulture);
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(newClass.ClassID+" "+newClass.ClassName+" has been added to your classes!");
+            Console.WriteLine(newClass.ClassID + " " + newClass.ClassName + " has been added to your classes!");
 
             myClasses.Add(newClass);
-            
+
         }
-        
+
         //DISPLAY---------------------------------
         public static void ShowAClass(string inputC)
         {
@@ -124,17 +129,17 @@ namespace ClassORGcaoa2
 
             foreach (Class item in myClasses)
             {
-               
+
                 if (inputC == item.ClassID || inputC == item.ClassName)
                 {
                     Console.ForegroundColor = ConsoleColor.White;
 
                     Console.WriteLine(item.ClassID);
                     Console.WriteLine(item.ClassName);
-                    Console.WriteLine("Room "+item.Room);
-                    Console.WriteLine("Teacher "+item.Teacher);
+                    Console.WriteLine("Room " + item.Room);
+                    Console.WriteLine("Teacher " + item.Teacher);
                     Console.WriteLine(item.TimeS);
-                    Console.WriteLine("Days: "+item.Days);
+                    Console.WriteLine("Days: " + item.Days);
 
                 }
                 else if (inputC != item.ClassID || inputC != item.ClassName)
@@ -144,7 +149,7 @@ namespace ClassORGcaoa2
                 }
 
             }
-            
+
         }
         public static void ShowALLclasses()
         {
@@ -182,32 +187,33 @@ namespace ClassORGcaoa2
 
         public static void AddTask()
         {
-           
-                ToDo newTask = new ToDo();
+
+            ToDo newTask = new ToDo();
             Console.ForegroundColor = ConsoleColor.White;
 
             Console.WriteLine("Name your task");
-                newTask.TaskName = Console.ReadLine();
+            newTask.TaskName = Console.ReadLine();
 
-                 Console.WriteLine("For what Class is this Assignment? (class ID)");
-                 newTask.ForClass= Console.ReadLine();
+            Console.WriteLine("For what Class is this Assignment? (class ID)");
+            newTask.ForClass = Console.ReadLine();
 
-            
-                newTask.DateAssigned = DateTime.Now;
 
-                Console.WriteLine("When is this Assignment due? (MM/DD/YYYY 00:00 #M");
-                string dateDueSTR = Console.ReadLine();
-                newTask.DateDue = DateTime.Parse(dateDueSTR);
+            newTask.DateAssigned = DateTime.Now;
 
-                newTask.CompStatus = false;
+            Console.WriteLine("When is this Assignment due? (MM/DD/YYYY 00:00 #M");
+            string dateDueSTR = Console.ReadLine();
+            newTask.DateDue = DateTime.Parse(dateDueSTR);
 
-                myTasks.Add(newTask);
+            newTask.CompStatus = false;
 
-            Console.WriteLine("Your new task for "+newTask.ForClass+ " has been Added!" );
-            
+            myTasks.Add(newTask);
+
+            Console.WriteLine("Your new task for " + newTask.ForClass + " has been Added!");
+
         }
 
-        public static void ShowAllTasks() {
+        public static void ShowAllTasks()
+        {
 
             Console.WriteLine("Your Current List of ASSIGNMENTS:");
             Console.WriteLine("=============================================");
@@ -222,17 +228,17 @@ namespace ClassORGcaoa2
             {
                 Console.ForegroundColor = ConsoleColor.White;
 
-                Console.WriteLine("Class "+thing.ForClass);
-                Console.WriteLine("Assignment: "+thing.TaskName);
-                Console.WriteLine("Date Assigned "+thing.DateAssigned);
-                Console.WriteLine("Date DUE: "+thing.DateDue);
+                Console.WriteLine("Class " + thing.ForClass);
+                Console.WriteLine("Assignment: " + thing.TaskName);
+                Console.WriteLine("Date Assigned " + thing.DateAssigned);
+                Console.WriteLine("Date DUE: " + thing.DateDue);
                 if (thing.CompStatus == false)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Incomplete");
                 }
 
-                if(thing.CompStatus == true)
+                if (thing.CompStatus == true)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Completed");
@@ -241,7 +247,7 @@ namespace ClassORGcaoa2
                 Console.WriteLine("----------------------------------------");
 
             }
-           
+
         }
 
         public static void ShowClassTask(string inputCT)
@@ -251,7 +257,7 @@ namespace ClassORGcaoa2
 
             foreach (ToDo thing in myTasks)
             {
-                
+
                 if (inputCT != thing.ForClass)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -270,7 +276,7 @@ namespace ClassORGcaoa2
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Incomplete");
                     }
-                    
+
                     if (thing.CompStatus == true)
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
@@ -286,7 +292,7 @@ namespace ClassORGcaoa2
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("Your Class Schedule");
             Console.WriteLine("===========================================");
-            
+
             if (myClasses.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -304,14 +310,14 @@ namespace ClassORGcaoa2
                 Console.WriteLine("________________________________________________");
             }
         }
-      
+
         public static void ChangeStatus()
         {
             ShowAllTasks();
             Console.ForegroundColor = ConsoleColor.White;
 
             Console.WriteLine("Enter Which Assigment you would like to mark as COMPLETE");
-           string uInputTask= Console.ReadLine();
+            string uInputTask = Console.ReadLine();
 
             foreach (ToDo tasks in myTasks)
             {
@@ -322,8 +328,8 @@ namespace ClassORGcaoa2
             }
             Console.ForegroundColor = ConsoleColor.Green;
 
-            Console.WriteLine("The status for "+uInputTask+" has been marked as COMPLETE");
-        
+            Console.WriteLine("The status for " + uInputTask + " has been marked as COMPLETE");
+
         }
 
     }
